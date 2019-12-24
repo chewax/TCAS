@@ -1,21 +1,12 @@
 #define BOOST_TEST_MODULE TCASSolutionTest
 #include <boost/test/included/unit_test.hpp>
 #include <iostream>
-#include "../core.cpp"
+#include "../core/Vector3.h"
+#include "../core/Matrix.h"
+#include "../core/Course.h"
 
 using namespace std;
-
-BOOST_AUTO_TEST_CASE(Test_Point3D)
-{
-  //Test equality comparator
-  Point3D p0(1.0, 2.0, 3.0);
-  Point3D p1(1.0, 2.0, 3.0);
-  BOOST_CHECK(p0 == p1);
-
-  //Test not equal comparator
-  Point3D p2(3.0, 2.0, 3.0);
-  BOOST_CHECK(p0 != p2);
-}
+using namespace core;
 
 BOOST_AUTO_TEST_CASE(Test_Vector3)
 {
@@ -66,10 +57,46 @@ BOOST_AUTO_TEST_CASE(Test_Matrix)
                       {2.0, 3.0, 3.0, 15.0},
                       {5.0, -3, 1.0, 14.0}};
 
-  double solution[3];
-  gaussianElimination(mat, solution);
-  Vector3 calc_solution(solution);
+                
+  Matrix m(mat);
+  Vector3 calc_solution = m.gaussian_elimination();
   Vector3 res_solution(3.0, 1.0, 2.0);
 
   BOOST_CHECK(calc_solution == res_solution);
 }
+
+BOOST_AUTO_TEST_CASE(Test_Course1)
+{
+  Vector3 pos_a1(2.0, 2.0, 1.0);
+  Vector3 dir_a1(0.0, 4.0, 0.0);
+  Course a1(pos_a1, dir_a1);
+
+  Vector3 pos_a2(4.0, 4.0, 0.0);
+  Vector3 dir_a2(-4.0, 0.0, 0.0);
+  Course a2(pos_a2, dir_a2);
+
+  Course coll = Course::shortest_distance(a1, a2);
+  coll.print("COLLISION");
+
+  BOOST_CHECK(coll.position == Vector3(2.0, 4.0, 1.0));
+  BOOST_CHECK(coll.direction == Vector3(0.0, 0.0, -1.0));
+  BOOST_CHECK_EQUAL(coll.direction.magnitude(), 1.0);
+  
+};
+
+BOOST_AUTO_TEST_CASE(Test_Course2)
+{
+  Course a1(2.0, 2.0, 6000.0, 360, 800.0);
+  a1.print("AIRCRAFT 1");
+
+  Course a2(4.0, 4.0, 6000.0, 270, 800.0);
+  a2.print("AIRCRAFT 2");
+  
+  Course coll = Course::shortest_distance(a1, a2);
+  coll.print("COLLISION");
+
+  // BOOST_CHECK(coll.position == Vector3(2.0, 4.0, 1.0));
+  // BOOST_CHECK(coll.direction == Vector3(0.0, 0.0, -1.0));
+  // BOOST_CHECK_EQUAL(coll.direction.magnitude(), 1.0);
+  
+};

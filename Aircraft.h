@@ -1,7 +1,6 @@
-#ifndef GUARD_aircraft
-#define GUARD_aircraft
+#pragma once
 #include <string>
-#include "core.cpp"
+#include "core/Course.h"
 
 class Aircraft
 {
@@ -20,5 +19,3 @@ public:
   bool intersect_course(const Aircraft& target, double& int_lat, double& int_lon);
   Course get_course() const;
 };
-
-#endif

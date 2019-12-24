@@ -1,4 +1,4 @@
-#include "aircraft.hpp"
+#include "Aircraft.h"
 
 using namespace std;
 
@@ -23,4 +23,5 @@ bool Aircraft::intersect_course(const Aircraft &other, double &int_lat, double &
 {
   Course self_crs = get_course();
   Course other_crs = other.get_course();
+  Course coll = Course::shortest_distance(self_crs, other_crs);
 }

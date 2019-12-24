@@ -30,7 +30,10 @@
       "type": "shell",
       "command": "g++",
       "args": [
-        "tests/tests.cpp",
+        "core/Vector3.cpp",
+        "core/Matrix.cpp",
+        "core/Course.cpp",
+        "tests/Tests.cpp",
         "-o",
         "${workspaceFolderBasename}-tests.out",
         "-I",
