@@ -76,7 +76,6 @@ BOOST_AUTO_TEST_CASE(Test_Course1)
   Course a2(pos_a2, dir_a2);
 
   Course coll = Course::shortest_distance(a1, a2);
-  coll.print("COLLISION");
 
   BOOST_CHECK(coll.position == Vector3(2.0, 4.0, 1.0));
   BOOST_CHECK(coll.direction == Vector3(0.0, 0.0, -1.0));
@@ -84,19 +83,59 @@ BOOST_AUTO_TEST_CASE(Test_Course1)
   
 };
 
-BOOST_AUTO_TEST_CASE(Test_Course2)
-{
-  Course a1(2.0, 2.0, 6000.0, 360, 800.0);
-  a1.print("AIRCRAFT 1");
+// BOOST_AUTO_TEST_CASE(Test_Course2)
+// {
+//   Course a1(2.0, 2.0, 6000.0, 360, 800.0);
+//   a1.print("AIRCRAFT 1");
 
-  Course a2(4.0, 4.0, 6000.0, 270, 800.0);
+//   Course a2(4.0, 4.0, 6000.0, 270, 800.0);
+//   a2.print("AIRCRAFT 2");
+  
+//   Course coll = Course::shortest_distance(a1, a2);
+//   coll.print("COLLISION");  
+// };
+
+
+// BOOST_AUTO_TEST_CASE(Test_Course3)
+// {
+//   const double NMTOFT = 6076.12;
+//   const double COORDTOFT = (10000/90) * 3280.4;
+
+//   Course a1(2.0 * NMTOFT, 2.0 * NMTOFT, 7000.0, 360, 500.0, 50);
+//   a1.print("AIRCRAFT 1");
+
+//   Course a2(4.0 * NMTOFT, 4.0 * NMTOFT, 6000.0, 270, 0.0, 140);
+//   a2.print("AIRCRAFT 2");
+  
+//   Course coll = Course::shortest_distance(a1, a2);
+//   coll.print("COLLISION");  
+// };
+
+// BOOST_AUTO_TEST_CASE(Test_Course3)
+// {
+//   const double COORDTOFT = (10000/90) * 3280.4;
+// // 42.3425295,-71.0090488
+//   Course a1(42.3425295 * COORDTOFT, -71.0090488 * COORDTOFT, 7000.0, 360, 500.0, 50);
+//   a1.print("AIRCRAFT 1");
+// // 42.3592159,-70.9734717
+//   Course a2(42.3592159 * COORDTOFT, -70.9734717 * COORDTOFT, 6000.0, 270, 0.0, 140);
+//   a2.print("AIRCRAFT 2");
+  
+//   Course coll = Course::shortest_distance(a1, a2);
+//   coll.print("COLLISION");  
+// };
+
+
+BOOST_AUTO_TEST_CASE(Test_Course3)
+{
+  const double COORDTOFT = (10000/90) * 3280.4;
+// 42.3426839,-71.0278827
+  Course a1(42.3426839 * COORDTOFT, -71.0278827 * COORDTOFT, 8000.0, 360, -500, 200);
+  a1.print("AIRCRAFT 1");
+// 42.3662439,-70.9839917
+  Course a2(42.3662439 * COORDTOFT, -70.9839917 * COORDTOFT, 6000.0, 270, 500, 150);
   a2.print("AIRCRAFT 2");
   
   Course coll = Course::shortest_distance(a1, a2);
-  coll.print("COLLISION");
-
-  // BOOST_CHECK(coll.position == Vector3(2.0, 4.0, 1.0));
-  // BOOST_CHECK(coll.direction == Vector3(0.0, 0.0, -1.0));
-  // BOOST_CHECK_EQUAL(coll.direction.magnitude(), 1.0);
-  
+  coll.print("COLLISION");  
 };

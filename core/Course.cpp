@@ -2,40 +2,33 @@
 #include <string>
 #include "Course.h"
 #include "Matrix.h"
+#include "Utils.h"
 #include <iostream>
-
-#define PRINT(x) std::cout << x << std::endl;
 
 using namespace core;
 
-double to_rad(int deg) {
-  return deg * M_PI / 180.0;
-}
+Course::Course(const Vector3 &t_position, const Vector3 &t_direction)
+  :position(t_position), direction(t_direction) {}
 
-Course::Course(const Vector3& t_position, const Vector3& t_direction)
+Course::Course(const Vector3 &t_position, int t_hdg, int t_climb_rate)
+  :position(t_position)
 {
-  position.assign(t_position);
-  direction.assign(t_direction);
-};
-
-Course::Course(const Vector3& t_position, int t_hdg, int t_climb_rate)
-{
-  position.assign(t_position);
   double rads = to_rad(t_hdg);
-  direction.x = sin( rads );
-  direction.y = cos( rads );
+  direction.x = sin(rads);
+  direction.y = cos(rads);
   direction.z = t_climb_rate;
 }
 
-Course::Course(double t_lat, double t_long, double t_alt, int t_hdg, int t_climb_rate)
+Course::Course(double t_lat, double t_long, double t_alt, int t_hdg, int t_climb_rate, int t_speed)
 {
   position.x = t_lat;
   position.y = t_long;
   position.z = t_alt;
 
   double rads = to_rad(t_hdg);
-  direction.x = sin( rads );
-  direction.y = cos( rads );
+  double spd_ft = kts_to_ftm(t_speed);
+  direction.x = sin(rads) * spd_ft;
+  direction.y = cos(rads) * spd_ft;
   direction.z = t_climb_rate;
 }
 
@@ -48,7 +41,8 @@ void Course::print()
 {
   std::cout << "Pos: " << position.toString() << std::endl;
   std::cout << "Dir: " << direction.toString() << std::endl;
-  std::cout << "Mag: " << direction.magnitude() << "\n" << std::endl;
+  std::cout << "Mag: " << direction.magnitude() << "\n"
+            << std::endl;
 }
 
 void Course::print(std::string name)
@@ -56,10 +50,11 @@ void Course::print(std::string name)
   std::cout << "*** " << name << " ***" << std::endl;
   std::cout << "Pos: " << position.toString() << std::endl;
   std::cout << "Dir: " << direction.toString() << std::endl;
-  std::cout << "Mag: " << direction.magnitude() << "\n" << std::endl;
+  std::cout << "Mag: " << direction.magnitude() << "\n"
+            << std::endl;
 }
 
-Course Course::shortest_distance(Course& c1, Course& c2)
+Course Course::shortest_distance(Course &c1, Course &c2)
 {
   if (c1.position == c2.position)
   {
@@ -71,16 +66,16 @@ Course Course::shortest_distance(Course& c1, Course& c2)
   if (d3 != Vector3::zero()) //Non paralell
   {
     double mat[3][4] = {
-      {c1.direction.x, -c2.direction.x, d3.x, c2.position.x - c1.position.x},
-      {c1.direction.y, -c2.direction.y, d3.y, c2.position.y - c1.position.y},
-      {c1.direction.z, -c2.direction.z, d3.z, c2.position.z - c1.position.z}};
-    
+        {c1.direction.x, -c2.direction.x, d3.x, c2.position.x - c1.position.x},
+        {c1.direction.y, -c2.direction.y, d3.y, c2.position.y - c1.position.y},
+        {c1.direction.z, -c2.direction.z, d3.z, c2.position.z - c1.position.z}};
+
     Matrix m(mat);
     Vector3 solution = m.gaussian_elimination();
 
     double a = solution.x;
     double b = solution.y;
-    double c = solution.z;    
+    double c = solution.z;
 
     if (a >= 0 && b >= 0)
     {
@@ -99,7 +94,6 @@ Course Course::shortest_distance(Course& c1, Course& c2)
   Vector3 i_dP = dP.inverted();
   double a2 = Vector3::dot(c1.direction, dP);
   double b2 = Vector3::dot(c2.direction, i_dP);
-  
 
   if (a2 < 0.0 && b2 < 0.0)
   {
@@ -128,5 +122,4 @@ Course Course::shortest_distance(Course& c1, Course& c2)
   }
 
   return Course(p3b, d3b);
-
 };
