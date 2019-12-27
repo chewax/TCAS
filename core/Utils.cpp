@@ -1,29 +1,31 @@
+
 #include "Utils.h"
-#include <math.h>
 #include <iostream>
 
 using namespace std;
+using namespace core;
 
-const float NM2FT = 6076.12;
-const float KT2FTM = 101.269;
-const float DEG2RAD = M_PI / 180.0;
-
-double to_rad(int deg)
+double core::to_rad(int deg)
 {
   return deg * DEG2RAD;
 }
 
-double kts_to_ftm(int kts)
+double core::kts_to_ftm(int kts)
 {
   return kts * KT2FTM;
 }
 
-double nms_to_fts(int nm)
+double core::nms_to_fts(int nm)
 {
   return nm * NM2FT;
 }
 
-void log(string& text)
+void core::log(string& text)
 {
   cout << text << endl;
+}
+
+double core::coord_to_ft(double coord)
+{
+  return coord * COORDTOFT;
 }
