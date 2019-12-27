@@ -31,7 +31,6 @@
       "command": "g++",
       "args": [
         "core/Vector3.cpp",
-        "core/Matrix.cpp",
         "core/Course.cpp",
         "tests/Tests.cpp",
         "-o",

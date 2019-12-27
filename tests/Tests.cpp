@@ -2,8 +2,8 @@
 #include <boost/test/included/unit_test.hpp>
 #include <iostream>
 #include "../core/Vector3.h"
-#include "../core/Matrix.h"
 #include "../core/Course.h"
+#include <math.h>
 
 using namespace std;
 using namespace core;
@@ -51,21 +51,7 @@ BOOST_AUTO_TEST_CASE(Test_Vector3)
   BOOST_CHECK(mag == 1.0);
 }
 
-BOOST_AUTO_TEST_CASE(Test_Matrix)
-{
-  double mat[3][4] = {{3.0, 2.0, -4.0, 3.0},
-                      {2.0, 3.0, 3.0, 15.0},
-                      {5.0, -3, 1.0, 14.0}};
-
-                
-  Matrix m(mat);
-  Vector3 calc_solution = m.gaussian_elimination();
-  Vector3 res_solution(3.0, 1.0, 2.0);
-
-  BOOST_CHECK(calc_solution == res_solution);
-}
-
-BOOST_AUTO_TEST_CASE(Test_Course1)
+BOOST_AUTO_TEST_CASE(Course_Test1)
 {
   Vector3 pos_a1(2.0, 2.0, 1.0);
   Vector3 dir_a1(0.0, 4.0, 0.0);
@@ -76,66 +62,76 @@ BOOST_AUTO_TEST_CASE(Test_Course1)
   Course a2(pos_a2, dir_a2);
 
   Course coll = Course::shortest_distance(a1, a2);
-
   BOOST_CHECK(coll.position == Vector3(2.0, 4.0, 1.0));
   BOOST_CHECK(coll.direction == Vector3(0.0, 0.0, -1.0));
   BOOST_CHECK_EQUAL(coll.direction.magnitude(), 1.0);
-  
 };
 
-// BOOST_AUTO_TEST_CASE(Test_Course2)
-// {
-//   Course a1(2.0, 2.0, 6000.0, 360, 800.0);
-//   a1.print("AIRCRAFT 1");
 
-//   Course a2(4.0, 4.0, 6000.0, 270, 800.0);
-//   a2.print("AIRCRAFT 2");
-  
-//   Course coll = Course::shortest_distance(a1, a2);
-//   coll.print("COLLISION");  
-// };
-
-
-// BOOST_AUTO_TEST_CASE(Test_Course3)
-// {
-//   const double NMTOFT = 6076.12;
-//   const double COORDTOFT = (10000/90) * 3280.4;
-
-//   Course a1(2.0 * NMTOFT, 2.0 * NMTOFT, 7000.0, 360, 500.0, 50);
-//   a1.print("AIRCRAFT 1");
-
-//   Course a2(4.0 * NMTOFT, 4.0 * NMTOFT, 6000.0, 270, 0.0, 140);
-//   a2.print("AIRCRAFT 2");
-  
-//   Course coll = Course::shortest_distance(a1, a2);
-//   coll.print("COLLISION");  
-// };
-
-// BOOST_AUTO_TEST_CASE(Test_Course3)
-// {
-//   const double COORDTOFT = (10000/90) * 3280.4;
-// // 42.3425295,-71.0090488
-//   Course a1(42.3425295 * COORDTOFT, -71.0090488 * COORDTOFT, 7000.0, 360, 500.0, 50);
-//   a1.print("AIRCRAFT 1");
-// // 42.3592159,-70.9734717
-//   Course a2(42.3592159 * COORDTOFT, -70.9734717 * COORDTOFT, 6000.0, 270, 0.0, 140);
-//   a2.print("AIRCRAFT 2");
-  
-//   Course coll = Course::shortest_distance(a1, a2);
-//   coll.print("COLLISION");  
-// };
-
-
-BOOST_AUTO_TEST_CASE(Test_Course3)
+BOOST_AUTO_TEST_CASE(Course_Test2)
 {
-  const double COORDTOFT = (10000/90) * 3280.4;
-// 42.3426839,-71.0278827
-  Course a1(42.3426839 * COORDTOFT, -71.0278827 * COORDTOFT, 8000.0, 360, -500, 200);
-  a1.print("AIRCRAFT 1");
-// 42.3662439,-70.9839917
-  Course a2(42.3662439 * COORDTOFT, -70.9839917 * COORDTOFT, 6000.0, 270, 500, 150);
-  a2.print("AIRCRAFT 2");
-  
+  Vector3 pos_a1(1.0, 1.0, 0.0);
+  Vector3 dir_a1(1.0, 1.0, 0.0);
+  Course a1(pos_a1, dir_a1);
+
+  Vector3 pos_a2(3.0, 4.0, 0.0);
+  Vector3 dir_a2(1.0, 0.0, 0.0);
+  Course a2(pos_a2, dir_a2);
+
   Course coll = Course::shortest_distance(a1, a2);
-  coll.print("COLLISION");  
+  BOOST_CHECK(coll.position == Vector3(4.0, 4.0, 0.0));
+  BOOST_CHECK(coll.direction == Vector3(0.0, 0.0, 0.0));
+  BOOST_CHECK_EQUAL(coll.direction.magnitude(), 0.0);
+};
+
+
+BOOST_AUTO_TEST_CASE(Course_Test3)
+{
+  Vector3 pos_a1(3.0, 4.0, 3.0);
+  Vector3 dir_a1(1.0, 0.0, 0.0);
+  Course a1(pos_a1, dir_a1);
+
+  Vector3 pos_a2(3.0, 5.0, 0.0);
+  Vector3 dir_a2(1.0, 0.0, 0.0);
+  Course a2(pos_a2, dir_a2);
+
+  Course coll = Course::shortest_distance(a1, a2);
+  BOOST_CHECK(coll.position == Vector3(3.0, 4.0, 3.0));
+  BOOST_CHECK(coll.direction == Vector3(0.0, 1.0, -3.0));
+  BOOST_CHECK_EQUAL(coll.direction.magnitude(), sqrt(10));
+};
+
+
+BOOST_AUTO_TEST_CASE(Course_Test4)
+{
+  Vector3 pos_a1(4.0, 8.0, 5.0);
+  Vector3 dir_a1(1.0, -5.0, 0.0);
+  Course a1(pos_a1, dir_a1);
+
+  Vector3 pos_a2(3.0, 4.0, 3.0);
+  Vector3 dir_a2(1.0, 0.0, 0.0);
+  Course a2(pos_a2, dir_a2);
+
+  Course coll = Course::shortest_distance(a1, a2);
+  coll.print();
+  BOOST_CHECK(coll.position == Vector3(4.8, 4.0, 5.0));
+  BOOST_CHECK(coll.direction == Vector3(0.0, 0.0, -2.0));
+  BOOST_CHECK_EQUAL(coll.direction.magnitude(), 2);
+};
+
+BOOST_AUTO_TEST_CASE(Course_Test5)
+{
+  Vector3 pos_a1(4.0, 8.0, 5.0);
+  Vector3 dir_a1(1.0, -5.0, -1.0);
+  Course a1(pos_a1, dir_a1);
+
+  Vector3 pos_a2(3.0, 4.0, 3.0);
+  Vector3 dir_a2(1.0, 0.0, 0.0);
+  Course a2(pos_a2, dir_a2);
+
+  Course coll = Course::shortest_distance(a1, a2);
+  coll.print();
+  // BOOST_CHECK(coll.position == Vector3(3.0, 4.0, 3.0));
+  // BOOST_CHECK(coll.direction == Vector3(0.0, 1.0, -3.0));
+  // BOOST_CHECK_EQUAL(coll.direction.magnitude(), sqrt(10));
 };

@@ -1,29 +1,42 @@
 #pragma once
-#include "Vector3.h"
 
-namespace core
+namespace core::matrix
 {
-  class Matrix
+  // Solves a set of linear equations using Gaussian elimination
+  double* solve(double* matrix, int rows, int cols)
   {
-  private:
-    double m_mat[3][4];
+    for (int i = 0; i < cols - 1; i++)
+      for (int j = i; j < rows; j++)
+        if (matrix[i + j * cols] != 0)
+        {
+          if (i != j)
+            for (int k = i; k < cols; k++)
+            {
+              double temp = matrix[k + j * cols];
+              matrix[k + j * cols] = matrix[k + i * cols];
+              matrix[k + i * cols] = temp;
+            }
 
-    // function for elementary operation of swapping two rows
-    void swap_row(double mat[3][4], int i, int j);
+          j = i;
 
-    // function to print matrix content at any stage
-    void print(double mat[3][4]);
+          for (int v = 0; v < rows; v++)
+            if (v == j)
+              continue;
+            else
+            {
+              double factor = matrix[i + v * cols] / matrix[i + j * cols];
+              matrix[i + v * cols] = 0;
 
-    // function to reduce matrix to r.e.f.
-    int forwardElim(double mat[3][4]);
+              for (int u = i + 1; u < cols; u++)
+              {
+                matrix[u + v * cols] -= factor * matrix[u + j * cols];
+                matrix[u + j * cols] /= matrix[i + j * cols];
+              }
+              matrix[i + j * cols] = 1;
+            }
+          break;
+        }
 
-    // function to calculate the values of the unknowns
-    void backSub(double mat[3][4], double (&solution)[3]);
-
-
-  public:
-    // function to get matrix content
-    Vector3 gaussian_elimination();
-    Matrix(double (&t_mat)[3][4]);
-  };
+    return matrix;
+  }
 } // namespace core
