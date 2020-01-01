@@ -32,6 +32,7 @@
       "args": [
         "core/Vector3.cpp",
         "core/Course.cpp",
+        "Aircraft.cpp",
         "tests/Tests.cpp",
         "-o",
         "${workspaceFolderBasename}-tests.out",

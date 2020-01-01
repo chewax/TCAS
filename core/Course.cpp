@@ -8,9 +8,6 @@
 
 using namespace core;
 
-#define DEBUG(x) std::cout << x << std::endl
-
-
 Course::Course(double t_lat, double t_lon, double t_alt, int t_hdg, int t_climb_rate, int t_speed)
 {
   position.x = geo::Coord::to_fts(t_lat);
@@ -23,6 +20,7 @@ Course::Course(double t_lat, double t_lon, double t_alt, int t_hdg, int t_climb_
   direction.y = cos(rads) * spd_ft;
   direction.z = t_climb_rate;
 }
+
 Course::Course(const Vector3& position, const Vector3& direction)
 {
   this->position = position;
@@ -89,12 +87,16 @@ bool Course::contains(const Vector3& P) const
   return Vector3::dot(AP, V) > 0;
 }
 
+Course Course::check_proximity(Course& c1, Course& c2)
+{
+  
+}
+
 // Returns a Course C3 where C3.position belongs to C1 and the distance from C1 to C2 is minimal.
 Course Course::shortest_distance(Course& c1, Course& c2)
 {
   if (c1.position == c2.position)
   {
-    DEBUG("--> 1");
     return Course(c1.position, Vector3::zero());
   }
 
@@ -113,15 +115,10 @@ Course Course::shortest_distance(Course& c1, Course& c2)
     double b = solution[7];
     double c = solution[11];
 
-    // double a = solution.x;
-    // double b = solution.y;
-    // double c = solution.z;
-
     if (a >= 0 && b >= 0)
     {
       Vector3 position = c1.position + (c1.direction * a);
       Vector3 direction = d3 * c;
-      DEBUG("--> 2");
       return Course(position, direction);
     }
   }
@@ -137,7 +134,6 @@ Course Course::shortest_distance(Course& c1, Course& c2)
 
   if (a2 < 0.0 && b2 < 0.0)
   {
-    DEBUG("--> 3");
     return Course(c1.position, dP);
   }
 
@@ -149,22 +145,18 @@ Course Course::shortest_distance(Course& c1, Course& c2)
 
   if (b2 < 0.0)
   {
-    DEBUG("--> 4");
     return Course(p3a, d3a);
   }
 
   if (a2 < 0.0)
   {
-    DEBUG("--> 5");
     return Course(p3b, d3b);
   }
 
   if (d3a.magnitude() <= d3b.magnitude())
   {
-    DEBUG("--> 6");
     return Course(p3a, d3a);
   }
 
-  DEBUG("--> 7");
   return Course(p3b, d3b);
 };

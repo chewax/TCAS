@@ -16,6 +16,8 @@ public:
   std::string model;
 
   Aircraft();
-  bool intersect_course(const Aircraft& target, double& int_lat, double& int_lon);
+  Aircraft(double t_lat, double t_lon, int t_alt, int t_hdg, int t_climb_rate, int t_speed);
+
+  bool intersect_course(const Aircraft& target);
   Course get_course() const;
 };

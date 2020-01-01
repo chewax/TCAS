@@ -14,6 +14,8 @@ struct Course
   bool contains(const core::Vector3& P) const;
 
   Course static shortest_distance(Course& c1, Course& c2);
+  Course static check_proximity(Course& c1, Course& c2);
+
   void print();
   void print(std::string name);
 };
