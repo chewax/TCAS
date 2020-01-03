@@ -3,7 +3,6 @@
 #include <math.h>
 #include <string>
 
-using namespace std;
 using namespace core;
 
 Vector2::Vector2(double t_x, double t_y) : x(t_x), y(t_y)
@@ -116,12 +115,12 @@ Vector2 Vector2::inverted() const
   return Vector2(-x, -y);
 }
 
-string Vector2::to_string()
+std::string Vector2::to_string()
 {
   return "[ " + std::to_string(x) + ", " + std::to_string(y) + " ]";
 }
 
 void Vector2::print()
 {
-  cout << to_string() << endl;
+  std::cout << to_string() << std::endl;
 }
