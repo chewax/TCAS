@@ -6,17 +6,15 @@ namespace core
   struct Vector2
   {
     double x, y, z;
-    Vector2(double t_x, double t_y, double t_z);
-    Vector2(double v[3]);
+    double m_precision = 0.000001;
+    Vector2(double t_x, double t_y);
+    Vector2(double v[2]);
     Vector2();
     Vector2(const Vector2& other); // copy constructor
 
     Vector2 static zero();
-    Vector2 static cross(const Vector2& a, const Vector2& b);
     double static dot(const Vector2& a, const Vector2& b);
     double static distance(const Vector2& a, const Vector2& b);
-    double static distanceX(const Vector2& a, const Vector2& b);
-    double static distanceY(const Vector2& a, const Vector2& b);
   
     Vector2 operator+(const Vector2& other) const;
     Vector2 operator-(const Vector2& other) const;
