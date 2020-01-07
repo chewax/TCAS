@@ -2,7 +2,7 @@
 #include <math.h>
 #include <string>
 
-namespace core::geo
+namespace core
 {
   const float NM2FT = 6076.12;
   const float KT2FTM = 101.269;

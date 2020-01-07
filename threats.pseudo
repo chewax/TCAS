@@ -1,0 +1,37 @@
+
+def SEPARATION_THRESHOLDS {
+  HORIZONTAL: 1mile
+  VERTICAL: 2000ft
+  TIME: 30s
+};
+
+for every incoming_traffic
+    Conflict conflict = compute_conflict(incoming_traffic);
+    resolve_conflict(conflict);
+
+
+compute_conflict(incoming_traffic)
+  Conflict conflict;
+  
+  //compute traffic distances.
+  conflict.incoming_traffic = incoming_traffic;
+  conflict.dx_traffic = calculate_dx(this.position, incoming_traffic.position);
+  conflict.dy_traffic = caclulate_dy(this.position, incoming_traffic.position);
+
+  
+  
+  //compute intercept_point distances and times
+  conflict.intercept_point = calculate_intercept_point(incoming_traffic);
+  conflict.dx_intercept_point = calculate_dx(this.position, conflict.intercept_point);
+  conflict.dy_intercept_point = calculate_dy(this.position, conflict.intercept_point);
+  conflict.dt_intercept = calculate_dt(this.position, this.gs, this.ground_track); 
+
+
+  return conflict;
+
+
+resolve_conflict (conflict)
+
+  if (conflict.dx_traffic() <= SEPARATION_THRESHOLDS.HORIZONTAL)  
+
+  

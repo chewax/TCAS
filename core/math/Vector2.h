@@ -5,7 +5,7 @@ namespace core
 {
   struct Vector2
   {
-    double x, y, z;
+    double x, y;
     double m_precision = 0.000001;
     Vector2(double t_x, double t_y);
     Vector2(double v[2]);
@@ -15,7 +15,7 @@ namespace core
     Vector2 static zero();
     double static dot(const Vector2& a, const Vector2& b);
     double static distance(const Vector2& a, const Vector2& b);
-  
+
     Vector2 operator+(const Vector2& other) const;
     Vector2 operator-(const Vector2& other) const;
     Vector2 operator-() const;

@@ -8,6 +8,9 @@
       "label": "build main",
       "command": "g++",
       "args": [
+        "core/math/Vector2.cpp",
+        "core/navigation/Conflict.cpp",
+        "core/airspace/Drone.cpp",
         "main.cpp",
         "-o",
         "main.out",
@@ -30,9 +33,9 @@
       "type": "shell",
       "command": "g++",
       "args": [
-        "core/Vector3.cpp",
-        "core/Course.cpp",
-        "Aircraft.cpp",
+        "core/math/Vector2.cpp",
+        "core/navigation/Conflict.cpp",
+        "core/airspace/Drone.cpp",
         "tests/Tests.cpp",
         "-o",
         "${workspaceFolderBasename}-tests.out",
