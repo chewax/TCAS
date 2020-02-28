@@ -3,35 +3,24 @@
 #include <math.h>
 #include "../navigation/Conflict.h"
 #include "../math/Vector2.h"
+#include "Aircraft.h"
 
 enum class DroneState
 {
   NORMAL, MONITORING_TRAFFIC, RESOLVING_CONFLICT
 };
 
-class Drone
+class Drone: public Aircraft
 {
-
-private:
-  core::Vector2 m_position;
-  core::Vector2 m_direction;
-  double m_lat;
-  double m_lon;
   DroneState state;
 
 public:
-  int speed;
-  int hdg;
-  int alt;
-  int climb_rate;
-  std::string reg;
-  std::string model;
-
   Drone();
   Drone(double t_lat, double t_lon, int t_alt, int t_hdg, int t_climb_rate, int t_speed);
   
   core::Vector2 get_direction() const;
   core::Vector2 get_position() const;
+
   bool in_violation(const core::ConflictInfo& conflict) const;
   bool theats_ahead(const core::ConflictInfo& conflict) const;
   core::ConflictInfo get_conflict_details(const Drone& a2) const;

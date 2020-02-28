@@ -1,9 +1,9 @@
 #include "Conflict.h"
 
-core::ConflictInfo::ConflictInfo(core::Vector2 traffic_pos, core::Vector2 traffic_dir, double traffic_dist, double self_dist)
-  :traffic_position(traffic_pos), traffic_direction(traffic_dir), m_traffic_collision_distance(traffic_dist), m_self_collision_distance(self_dist)
+core::ConflictInfo::ConflictInfo(Aircraft traffic, double collision_distance)
 {
-  this->collision_point = traffic_pos + (traffic_dir.normalize() * traffic_dist);
+  this->traffic = traffic;
+  this->collision_point = traffic.get_position() + (traffic.get_direction().normalize() * collision_distance);
   this->conflict = true;
 };
 
