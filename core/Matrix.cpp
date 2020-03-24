@@ -1,13 +1,25 @@
 #include <iostream>
 #include <math.h>
-#define N 3
+#include "Matrix.h"
+
+using namespace core;
+
+Matrix::Matrix(double (&t_mat)[3][4]){
+    for (size_t i = 0; i < 3; i++)
+    {
+        for (size_t j = 0; j < 4; j++)
+        {
+            m_mat[i][j] = t_mat[i][j];
+        }   
+    }
+}
 
 // function for elementary operation of swapping two rows 
-void swap_row(double mat[N][N+1], int i, int j) 
+void Matrix::swap_row(double mat[3][4], int i, int j) 
 { 
     //printf("Swapped rows %d and %d\n", i, j); 
   
-    for (int k=0; k<=N; k++) 
+    for (int k=0; k<=3; k++) 
     { 
         double temp = mat[i][k]; 
         mat[i][k] = mat[j][k]; 
@@ -16,26 +28,26 @@ void swap_row(double mat[N][N+1], int i, int j)
 } 
 
 // function to print matrix content at any stage 
-void print(double mat[N][N+1]) 
+void Matrix::print(double mat[3][4]) 
 { 
-    for (int i=0; i<N; i++, printf("\n")) 
-        for (int j=0; j<=N; j++) 
+    for (int i=0; i<3; i++, printf("\n")) 
+        for (int j=0; j<=3; j++) 
             printf("%lf ", mat[i][j]); 
   
     printf("\n"); 
 } 
 
 // function to reduce matrix to r.e.f. 
-int forwardElim(double mat[N][N+1]) 
+int Matrix::forwardElim(double mat[3][4]) 
 { 
-    for (int k=0; k<N; k++) 
+    for (int k=0; k<3; k++) 
     { 
         // Initialize maximum value and index for pivot 
         int i_max = k; 
         int v_max = mat[i_max][k]; 
   
         /* find greater amplitude for pivot if any */
-        for (int i = k+1; i < N; i++) 
+        for (int i = k+1; i < 3; i++) 
             if (abs(mat[i][k]) > v_max) 
                 v_max = mat[i][k], i_max = i; 
   
@@ -50,7 +62,7 @@ int forwardElim(double mat[N][N+1])
             swap_row(mat, k, i_max); 
   
   
-        for (int i=k+1; i<N; i++) 
+        for (int i=k+1; i<3; i++) 
         { 
             /* factor f to set current row kth element to 0, 
              * and subsequently remaining kth column to 0 */
@@ -58,7 +70,7 @@ int forwardElim(double mat[N][N+1])
   
             /* subtract fth multiple of corresponding kth 
                row element*/
-            for (int j=k+1; j<=N; j++) 
+            for (int j=k+1; j<=3; j++) 
                 mat[i][j] -= mat[k][j]*f; 
   
             /* filling lower triangular matrix with zeros*/
@@ -72,18 +84,18 @@ int forwardElim(double mat[N][N+1])
 } 
   
 // function to calculate the values of the unknowns 
-  void backSub(double mat[N][N+1], double (&solution)[N]) 
+void Matrix::backSub(double mat[3][4], double (&solution)[3]) 
 {   
     /* Start calculating from last equation up to the 
        first */
-    for (int i = N-1; i >= 0; i--) 
+    for (int i = 3-1; i >= 0; i--) 
     { 
         /* start with the RHS of the equation */
-        solution[i] = mat[i][N]; 
+        solution[i] = mat[i][3]; 
   
         /* Initialize j to i+1 since matrix is upper 
            triangular*/
-        for (int j=i+1; j<N; j++) 
+        for (int j=i+1; j<3; j++) 
         { 
             /* subtract all the lhs values 
              * except the coefficient of the variable 
@@ -98,10 +110,10 @@ int forwardElim(double mat[N][N+1])
 } 
 
 // function to get matrix content
-void gaussianElimination(double mat[N][N + 1], double (&solution)[N])
+Vector3 Matrix::gaussian_elimination()
 {
   /* reduction into r.e.f. */
-  int singular_flag = forwardElim(mat);
+  int singular_flag = forwardElim(m_mat);
 
   /* if matrix is singular */
   if (singular_flag != -1)
@@ -111,15 +123,18 @@ void gaussianElimination(double mat[N][N + 1], double (&solution)[N])
     /* if the RHS of equation corresponding to 
            zero row  is 0, * system has infinitely 
            many solutions, else inconsistent*/
-    if (mat[singular_flag][N])
+    if (m_mat[singular_flag][3])
       printf("Inconsistent System.");
     else
       printf("May have infinitely many "
              "solutions.");
-    return;
+    return Vector3::zero();
   }
 
-  backSub(mat, solution);
+    double solution[3];
+    backSub(m_mat, solution);
+
+    return Vector3(solution);
 }
 
 
