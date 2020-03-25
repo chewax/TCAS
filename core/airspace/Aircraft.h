@@ -3,23 +3,6 @@
 #include <math.h>
 #include "../math/Vector2.h"
 
-// #define KT2FTM 101.269
-
-// class Speed
-// {
-//   int m_val; //to be stored in feets per minute
-
-//   public:
-//   Speed(): m_val(0f) {}
-//   Speed(int val): m_val(val) {}
-
-//   int operator "" _kts (int val)
-//   {
-//     return 
-//   }
-
-// }
-
 class Aircraft
 {
 

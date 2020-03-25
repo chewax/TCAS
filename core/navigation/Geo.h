@@ -4,10 +4,7 @@
 
 namespace core
 {
-  const float NM2FT = 6076.12;
-  const float KT2FTM = 101.269;
-  const float DEG2RAD = M_PI / 180.0;
-  const double COORDTOFT = (10000 / 90) * 3280.4;
+  const double COORDTOFT = (10000 / 90) * 3280.4f;
 
   double to_rad(int deg);
   double kts_to_ftm(int kts);

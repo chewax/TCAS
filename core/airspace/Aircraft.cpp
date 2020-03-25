@@ -1,5 +1,4 @@
 #include "Aircraft.h"
-#include "../utils/Utils.h"
 
 Aircraft::Aircraft()
     : m_lat(0.0), m_lon(0.0), speed(0), hdg(-1), alt(-1), climb_rate(-1), reg(""), model("") {}

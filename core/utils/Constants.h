@@ -15,32 +15,32 @@
 #define DEG2RAD (M_PI / 180.0)
 
 
-int operator "" _kts (int val)
+double operator "" _kts (unsigned long long val)
 {
   return val * KT2FTM;
 }
 
-int operator "" _kmh (int val)
+double operator "" _kmh (unsigned long long val)
 {
   return val * KMH2FTM;
 }
 
-int operator "" _ftm (int val)
+double operator "" _ftm (unsigned long long val)
 {
   return val;
 }
 
-double operator "" _nm (int val)
+double operator "" _nm (unsigned long long val)
 {
   return val * NM2FT;
 }
 
-double operator "" _km (int val)
+double operator "" _km (unsigned long long val)
 {
   return val * KM2FT;
 }
 
-double operator "" _sm (int val)
+double operator "" _sm (unsigned long long val)
 {
   return val * SM2FT;
 }
