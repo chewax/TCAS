@@ -11,7 +11,7 @@
         "core/math/Vector2.cpp",
         "core/navigation/Conflict.cpp",
         "core/airspace/Drone.cpp",
-        "main.cpp",
+        "Main.cpp",
         "-o",
         "main.out",
         "-std=c++11"
@@ -35,7 +35,6 @@
       "args": [
         "core/math/Vector2.cpp",
         "core/navigation/Conflict.cpp",
-        "core/airspace/Aircraft.cpp",
         "core/airspace/Drone.cpp",
         "tests/Tests.cpp",
         "-o",

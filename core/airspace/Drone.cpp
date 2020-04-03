@@ -1,6 +1,7 @@
 #include "Drone.h"
 #include "../utils/Utils.h"
 #include "../navigation/Geo.h"
+#include "../navigation/Conflict.h"
 
 Drone::Drone()
 {
@@ -10,8 +11,6 @@ Drone::Drone()
   hdg = -1;
   alt = -1;
   climb_rate = 1;
-  reg = "";
-  model = ""; 
 }
 
 Drone::Drone(double t_lat, double t_lon, int t_alt, int t_hdg, int t_climb_rate, int t_speed)
@@ -93,7 +92,6 @@ core::Vector2 Drone::get_position() const
   //Equivalent to resolution advisory on TCAS but instead of advising an action, execute it
   void Drone::resolution_actions(const core::Conflict& conflict) const
   {
-    
     std::cout << "DISTANCE TO CONFLICT: " << core::Vector2::distance( this->get_position(), conflict.traffic.get_position()) << std::endl;
     std::cout << "NEGOTIATING RESULUTION: " << std::endl;
     std::cout << "CLIMB, CLIMB NOW" << std::endl;

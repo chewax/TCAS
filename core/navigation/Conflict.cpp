@@ -1,6 +1,6 @@
 #include "Conflict.h"
 
-core::Conflict::Conflict(Aircraft t_traffic, double t_dtraffic_collision, double t_dself_collision)
+core::Conflict::Conflict(Drone t_traffic, double t_dtraffic_collision, double t_dself_collision)
 {
   this->traffic = t_traffic;
   this->distance_traffic_collision = t_dtraffic_collision; //signed

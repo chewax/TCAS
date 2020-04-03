@@ -1,18 +1,27 @@
 #pragma once
 #include <string>
 #include <math.h>
-#include "../navigation/Conflict.h"
 #include "../math/Vector2.h"
-#include "Aircraft.h"
+
+//Forward declaration of Conflict
+namespace core {
+  struct Conflict;
+}
 
 enum class DroneState
 {
   NORMAL, MONITORING_TRAFFIC, RESOLVING_CONFLICT
 };
 
-class Drone: public Aircraft
+class Drone
 {
   DroneState state;
+  
+protected:
+  core::Vector2 m_position;
+  core::Vector2 m_direction;
+  double m_lat;
+  double m_lon;
 
 public:
   Drone();
@@ -25,9 +34,14 @@ public:
   bool theats_ahead(const core::Conflict& conflict) const;
   core::Conflict get_conflict_details(const Drone& a2) const;
   void check_conflict(const Drone& a2) const;
+
   //Equivalent to resolution advisory on TCAS but instead of advising an action, execute it
   void resolution_actions(const core::Conflict& conflict) const;
   void traffic_advisory (const core::Conflict& conflict) const;
   void resolve_conflict(const core::Conflict& conflict) const;
 
+  int speed;
+  int hdg;
+  int alt;
+  int climb_rate;
 };
