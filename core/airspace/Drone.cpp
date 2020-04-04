@@ -49,6 +49,10 @@ core::Vector2 Drone::get_position() const
     return false;
   }
 
+  // Deprecated!
+  // Not being used in current project, is only mantainted for future reference
+  // ========
+  // Projects both paths to check for any possible future collisions between both aerodynes.
   bool Drone::theats_ahead(const core::Conflict& conflict) const
   {
     double dx_a = conflict.distance_self_collision;
@@ -105,7 +109,7 @@ core::Vector2 Drone::get_position() const
   void Drone::resolve_conflict(const core::Conflict& conflict) const
   {
     if (in_violation(conflict)) return resolution_actions(conflict);
-    if (theats_ahead(conflict)) return traffic_advisory(conflict);
+    // if (theats_ahead(conflict)) return traffic_advisory(conflict);
   }
 
    void Drone::check_conflict(const Drone& a2) const
