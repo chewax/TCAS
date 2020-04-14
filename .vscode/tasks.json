@@ -14,6 +14,8 @@
         "Main.cpp",
         "-o",
         "main.out",
+        "-I",
+        "./lib",
         "-std=c++11"
       ],
       "problemMatcher": [],
