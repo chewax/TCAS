@@ -16,6 +16,7 @@
         "main.out",
         "-I",
         "./lib",
+        "-lncurses",
         "-std=c++11"
       ],
       "problemMatcher": [],
