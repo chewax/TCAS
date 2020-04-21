@@ -1,11 +1,11 @@
 #include <vector>
 #include <string>
 #include <ncurses.h>
-#include "../utils/VirtualATC.h"
+#include "utils/VirtualATC.h"
+#include "ui/UIController.h"
 
-class CommandHandler {
+class CommandHandler: public UIController {
   private:
-    WINDOW* _window;
     VirtualATC atc;
     void quick_setup();
     void show_traffic(const std::vector<std::string> &args);
@@ -16,23 +16,10 @@ class CommandHandler {
     int yOut = 1;
     void parse_command(const std::string &str, std::vector<std::string> &args) const;
 
-    template<typename... Args>
-    void _print(const std::string &msg, Args... args);
-
   public:
     void on_command(std::string command);
     CommandHandler(WINDOW* t_window, const VirtualATC &t_atc);
 };
-
-// Safely prints into command feedback window row.
-template<typename... Args>
-void CommandHandler::_print(const std::string &msg, Args... args)
-{
-  wmove(_window, yOut, xOut);
-  wclrtoeol(_window);
-  mvwprintw(_window, yOut, xOut, msg.c_str(), args...);
-  wrefresh(_window);
-}
 
 // Parses an input command into a vector of strings
 void CommandHandler::parse_command(const std::string &str, std::vector<std::string> &args) const
@@ -57,7 +44,7 @@ void CommandHandler::on_command(std::string command)
   // parse_instruction(args); //Parse an instruction for an airplane to perform an acti
 }
 
-CommandHandler::CommandHandler(WINDOW* t_window, const VirtualATC &t_atc): _window(t_window), atc(t_atc)
+CommandHandler::CommandHandler(WINDOW* t_window, const VirtualATC &t_atc): UIController(t_window), atc(t_atc)
 {
   wrefresh(_window);
 }

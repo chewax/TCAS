@@ -1,15 +1,17 @@
+#ifndef __UIRadar_H
+#define __UIRadar_H
+
 #include <iostream>
 #include <ncurses.h>
 #include <vector>
 #include <string>
 #include <functional>
-#include "../utils/VirtualATC.h"
+#include "utils/VirtualATC.h"
+#include "ui/UIController.h"
 
-
-class UIRadar {
+class UIRadar: public UIController {
 
   private:
-  WINDOW* _window;
   VirtualATC atc;
   
   public:
@@ -17,7 +19,8 @@ class UIRadar {
   void loop();
 };
 
-UIRadar::UIRadar(WINDOW* t_window, const VirtualATC &t_atc): _window(t_window), atc(t_atc)
+UIRadar::UIRadar(WINDOW* t_window, const VirtualATC &t_atc)
+:UIController(t_window),  atc(t_atc)
 {
   wrefresh(_window);
 }
@@ -29,3 +32,5 @@ void UIRadar::loop()
   wprintw(_window, "%d", traff.size());
   wrefresh(_window);
 }
+
+#endif

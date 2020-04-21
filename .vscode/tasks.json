@@ -16,6 +16,8 @@
         "main.out",
         "-I",
         "./lib",
+        "-I",
+        "./core",
         "-lncurses",
         "-std=c++11"
       ],

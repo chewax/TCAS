@@ -4,11 +4,11 @@
 #include <vector>
 #include <string>
 #include <chrono>
-#include "./core/utils/VirtualATC.h"
-#include "./core/airspace/Drone.h"
-#include "./core/ui/UICommands.h"
-#include "./core/ui/UIRadar.h"
-#include "./core/commands/CommandHandler.h"
+#include "utils/VirtualATC.h"
+#include "airspace/Drone.h"
+#include "ui/UICommands.h"
+#include "ui/UIRadar.h"
+#include "commands/CommandHandler.h"
 
 
 int main()
@@ -26,7 +26,7 @@ int main()
   start_x = 1;
 
   WINDOW* commands_window = newwin(3, width-1, start_y, start_x);
-  UICommandManager ucm(start_x, start_y, commands_window);
+  UICommandManager ucm(commands_window);
   
   VirtualATC atc;
   WINDOW* feedback_window = newwin(3, width-1, start_y-2, start_x);

@@ -1,25 +1,18 @@
+#ifndef __UICommands_H
+#define __UICommands_H
+
 #include <iostream>
-#include <ncurses.h>
 #include <vector>
+#include <ncurses.h>
 #include <string>
 #include <functional>
-
-//   // wattron(command_window, A_STANDOUT);
-//   // mvwprintw(command_window, 1,1, "this is my window");
-//   // wattroff(command_window, A_STANDOUT);
+#include "ui/UIController.h"
 
 using OnCommandCb = std::function<void(std::string)>;
 
-class UICommandManager {
+class UICommandManager: public UIController {
 
   private: 
-    int start_x;
-    int start_y;
-    int cmd_x;
-    int cmd_y;
-
-    WINDOW* command_window;
-
     std::vector<std::string> history;
     std::vector<std::string>::iterator it;
     std::string delim;
@@ -34,21 +27,21 @@ class UICommandManager {
   public:
     void loop();
     void on_command(OnCommandCb cb);
-    UICommandManager(int t_start_x, int t_start_y, WINDOW* t_win, std::string t_delim);
+    UICommandManager(WINDOW* t_window, std::string t_delim);
 };
 
 // Class constructor
 // Initialises history and iterators.
-UICommandManager::UICommandManager(int t_start_x, int t_start_y, WINDOW* t_win, std::string t_delim="$>")
-:start_x(t_start_x), start_y(t_start_y), command_window(t_win), delim(t_delim)
+UICommandManager::UICommandManager(WINDOW* t_window, std::string t_delim="$>")
+:UIController(t_window), delim(t_delim)
 {
-  nodelay(command_window, true);
-  keypad(command_window, true);
+  nodelay(_window, true);
+  keypad(_window, true);
 
   history.push_back("...");
   it = history.end();
-  cmd_x = t_delim.size() + 3; //1 for the border, 1 for the leading space, 1 for the trailing space
-  cmd_y = 1;
+  xOut = t_delim.size() + 3; //1 for the border, 1 for the leading space, 1 for the trailing space
+  yOut = 1;
   command = "";
 
   update_window();
@@ -62,11 +55,11 @@ void UICommandManager::on_command(OnCommandCb cb)
 // Updates window with buffered information
 void UICommandManager::update_window() const
 {
-  mvwprintw(command_window, cmd_y, 2, delim.c_str());
-  wclrtoeol(command_window);
-  mvwprintw(command_window, cmd_y, cmd_x, command.c_str());
-  box(command_window, 0, 0);
-  wrefresh(command_window);
+  mvwprintw(_window, yOut, 2, delim.c_str());
+  wclrtoeol(_window);
+  mvwprintw(_window, yOut, xOut, command.c_str());
+  box(_window, 0, 0);
+  wrefresh(_window);
 }
 
 // Ends command and parses contents
@@ -78,14 +71,14 @@ void UICommandManager::end_command()
   history.push_back(command);
   it = history.end();
   cb(command); 
-  // int c = wgetch(command_window);
+  // int c = wgetch(_window);
   command = "";
 }
 
 // Updates buffered command with current character input
 void UICommandManager::update_command()
 {
-  int c = wgetch(command_window);
+  int c = wgetch(_window);
 
   switch (c)
   {
@@ -140,3 +133,5 @@ void UICommandManager::loop()
   update_window();
   update_command();
 }
+
+#endif
